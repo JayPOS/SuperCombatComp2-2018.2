@@ -13,6 +13,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import auxiliar.Constantes;
 
 public class JanelaJogo extends JFrame implements ComponentListener, ActionListener {
 	
@@ -21,6 +26,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 	private JPanel detalhes;
 	private GridLayout tabuleirao;
 	private BorderLayout teste;
+	
 	
 	private Bandeira bandeira = new Bandeira(2);
 	private Soldado soldado = new Soldado(2);
@@ -57,7 +63,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 		detalhes.setBackground(new Color(145, 255, 117));
 		detalhes.setPreferredSize(new Dimension(COMPRIMENTO/5, LARGURA));
 		tabuleiro.setPreferredSize(new Dimension(TAM_BOTAO*10, TAM_BOTAO*10));
-		// Começarei aqui
+		// Comeï¿½arei aqui
 		
 		background.setLayout(teste);
 		tabuleiro.setLayout(tabuleirao);
@@ -73,7 +79,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 		
 		for (int i = 0; i < QTD_BOTAO; i++) {
             for (int j = 0; j < QTD_BOTAO; j++) {;
-                tabuleiro.add(botoes[i][j]);
+                tabuleiro.add(botoes[i][j]);                
                 botoes[i][j].addActionListener(this);
             }
         }
@@ -87,6 +93,8 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 		this.revalidate();
 //		this.repaint();
 	}
+	
+	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -114,7 +122,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 					System.out.println("Entrei5");
 					System.out.println("i = " + i + "\nj = " + j);
 					
-					// Checa se a peça pode mover e move! ----------------------------
+					// Checa se a peï¿½a pode mover e move! ----------------------------
 					
 					if (botoes[i][j] instanceof Vazio) {
 						
@@ -243,7 +251,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 						break;
 					}
 					
-		// SE O BOTAO SELECIONADO FOR OU BANDEIRA DO TIME AZUL OU BOMBA DO TIME AZUL. A ESCOLHA DA PEÇA E RESETADA ------------
+		// SE O BOTAO SELECIONADO FOR OU BANDEIRA DO TIME AZUL OU BOMBA DO TIME AZUL. A ESCOLHA DA PEï¿½A E RESETADA ------------
 					
 					if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Bandeira && 
 						((Bandeira)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0 ||
@@ -253,10 +261,12 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 						System.out.println("click:" + auxiliar.click);
 						break;
 					}
-//					if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Bandeira && 
-//							((Bandeira)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 1) {
-//						
-//					}
+					
+					// Ataque 
+					if (botoes[i][j] instanceof Espiao && 
+							((Espiao)botoes[i][j]).getTime() == 1) {
+						
+					}
 				}
 			}
 		}

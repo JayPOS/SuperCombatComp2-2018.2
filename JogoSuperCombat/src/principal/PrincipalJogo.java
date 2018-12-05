@@ -20,13 +20,18 @@ public class PrincipalJogo implements ActionListener {
 
 
 	public PrincipalJogo() {
-		this.modoJanela = this.getEDITOR();
+		this.modoJanela = 1;
 		
 	}
-	public void inicializaEditor() {
-		this.controladorJanela = new JanelaEditor2(0);
-		this.controladorJanela.setLocationRelativeTo(null);
-		this.controladorJanela.setVisible(true);
+	public void inicializaEditor(int tipo) {
+		if (tipo == 0) {
+			this.controladorJanela = new JanelaEditor2(tipo);
+			this.controladorJanela.setLocationRelativeTo(null);
+			this.controladorJanela.setVisible(true);
+		}
+		else {
+			this.controladorJanela = new EditorAleatorio();
+		}
 	}
 	public void inicializaJogao() {
 		this.controladorJanela.setVisible(true);
@@ -39,7 +44,7 @@ public class PrincipalJogo implements ActionListener {
 				
 			}
 			else if (jogo.modoJanela == jogo.getEDITOR()) {
-				jogo.inicializaEditor();
+				jogo.inicializaEditor(0);
 			}
 			else if(jogo.getModoJanela() == jogo.getALEATORIO()) {
 				

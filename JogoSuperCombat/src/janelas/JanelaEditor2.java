@@ -68,7 +68,9 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	private JButton[][] botoes = new JButton[QTD_BOTAO][QTD_BOTAO];
 	
 	public JanelaEditor2(int tipo) {
-			super("Super Combat");
+		super("Super Combat");
+		if (tipo == 0) {
+			
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setBounds(150, 50, COMPRIMENTO, LARGURA);
 			
@@ -89,7 +91,7 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 			detalhes.setPreferredSize(new Dimension(COMPRIMENTO/5, LARGURA));
 			tabuleiro.setPreferredSize(new Dimension(TAM_BOTAO*10, TAM_BOTAO*10));
 			
-			// Começarei aqui a estilizar o editor
+			// Comeï¿½arei aqui a estilizar o editor
 			
 			background.setLayout(teste);
 			tabuleiro.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -150,8 +152,14 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	        this.getContentPane().add(background);
 			this.revalidate();
 	//		this.repaint();
-	}
+		}
+		else if (tipo == 1) {
 
+			this.jogao.setLocationRelativeTo(null);
+			this.jogao.setVisible(true);
+		}
+		
+	}
 	
 
 	
@@ -184,7 +192,7 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 		return controleBotao;
 	}
 
-	// Selecionador de peças!!!
+	// Selecionador de peï¿½as!!!
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -220,7 +228,7 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 			this.Debugao();
 		}
 		
-		// Abaixo é o algoritmo para checar a o lugar selecionado e trocar pela peça desejada!
+		// Abaixo ï¿½ o algoritmo para checar a o lugar selecionado e trocar pela peï¿½a desejada!
 		
 		for (int i = 3; i < QTD_BOTAO; i++) {
             for (int j = 0; j < QTD_BOTAO; j++) {
@@ -355,7 +363,7 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 		}
 		System.out.println(this.controleBotao);
 	}
-	// função de gerador de inimigos!
+	// funï¿½ï¿½o de gerador de inimigos!
 	public void inimigosAleatorios() {
 		this.listaPosi.add(constante.BANDEIRA);
 		this.listaPosi.add(constante.MARECHAL);
@@ -397,6 +405,56 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 				}
 				else if (this.listaPosi.get(i*5+j) == constante.MARECHAL) {
 					botoes[i][j] = new Marechal(1);
+	                botoes[i][j].addActionListener(this);
+	                tabuleiro.add(botoes[i][j], i*5+j);
+				}
+				this.revalidate();
+			}
+		}
+		this.listaPosi.removeAll(listaPosi);
+	}
+	
+	public void aliadosAleatorios() {
+		this.listaPosi.add(constante.BANDEIRA);
+		this.listaPosi.add(constante.MARECHAL);
+		this.listaPosi.add(constante.SOLDADO);
+		this.listaPosi.add(constante.ESPIAO);
+		for (int i = 0; i < 2; i++) {
+			this.listaPosi.add(constante.BOMBA);
+			this.listaPosi.add(constante.SOLDADO);
+			this.listaPosi.add(constante.CABO);
+		}
+		Collections.shuffle(listaPosi);
+		for (int i = 3; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				this.tabuleiro.remove(botoes[i][j]);
+				if (listaPosi.get(i*5+j) == constante.BANDEIRA) {
+					botoes[i][j] = new Bandeira(0);
+	                botoes[i][j].addActionListener(this);
+	                tabuleiro.add(botoes[i][j], i*5+j);
+				}
+				else if (this.listaPosi.get(i*5+j) == constante.BOMBA) {
+					botoes[i][j] = new Bomba(0);
+	                botoes[i][j].addActionListener(this);
+	                tabuleiro.add(botoes[i][j], i*5+j);
+				}
+				else if (this.listaPosi.get(i*5+j) == constante.ESPIAO) {
+					botoes[i][j] = new Espiao(0);
+	                botoes[i][j].addActionListener(this);
+	                tabuleiro.add(botoes[i][j], i*5+j);
+				}
+				else if (this.listaPosi.get(i*5+j) == constante.SOLDADO) {
+					botoes[i][j] = new Soldado(0);
+	                botoes[i][j].addActionListener(this);
+	                tabuleiro.add(botoes[i][j], i*5+j);
+				}
+				else if (this.listaPosi.get(i*5+j) == constante.CABO) {
+					botoes[i][j] = new CaboArmeiro(0);
+	                botoes[i][j].addActionListener(this);
+	                tabuleiro.add(botoes[i][j], i*5+j);
+				}
+				else if (this.listaPosi.get(i*5+j) == constante.MARECHAL) {
+					botoes[i][j] = new Marechal(0);
 	                botoes[i][j].addActionListener(this);
 	                tabuleiro.add(botoes[i][j], i*5+j);
 				}
