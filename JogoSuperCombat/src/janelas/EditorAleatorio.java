@@ -24,7 +24,7 @@ public class EditorAleatorio extends JFrame {
 				botoes[i][j] =  new Vazio();
 			}
 		}
-		jogao = new JanelaJogo(botoes);
+		jogao = new JanelaJogo(botoes, 0);
 		jogao.setVisible(true);
 		
 	}

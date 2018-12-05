@@ -7,7 +7,7 @@ import javax.swing.JButton;
 public class Aleatorio extends JButton {
 
 	public Aleatorio() {
-		// TODO Auto-generated constructor stub
+		super("Aleatório");
 	}
 
 	public Aleatorio(Icon icon) {

@@ -47,7 +47,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 	
 	private JButton[][] botoes;
 
-	public JanelaJogo(JButton botoes[][]) {
+	public JanelaJogo(JButton botoes[][], int random) {
 		super("Super Combat");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 50, COMPRIMENTO, LARGURA);
@@ -78,8 +78,19 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 		this.botoes = botoes;
 		
 		for (int i = 0; i < QTD_BOTAO; i++) {
-            for (int j = 0; j < QTD_BOTAO; j++) {;
-                tabuleiro.add(botoes[i][j]);                
+            for (int j = 0; j < QTD_BOTAO; j++) {
+            	if (random == 0) {
+            		tabuleiro.add(botoes[i][j]);
+            	}  
+            	else if (random == 1) {
+            		if (i >= 3) {
+            			// Aliados aleatórios vai rodar aqui!
+            			
+            			
+            			
+            		}
+            		tabuleiro.add(botoes[i][j]);
+            	}
                 botoes[i][j].addActionListener(this);
             }
         }

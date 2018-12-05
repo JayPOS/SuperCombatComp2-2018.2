@@ -40,7 +40,7 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	private Vazio vazio = new Vazio();
 	private Desfazer desfazer = new Desfazer();
 	private Debug debug = new Debug();
-	
+	private Aleatorio random =  new Aleatorio();
 	private Jogar jogar = new Jogar();
 	
 	public int debugador = 0;
@@ -69,96 +69,92 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	
 	public JanelaEditor2(int tipo) {
 		super("Super Combat");
-		if (tipo == 0) {
 			
-			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setBounds(150, 50, COMPRIMENTO, LARGURA);
-			
-			// Chamadas de construtores:
-			this.addComponentListener(this);
-			this.setResizable(false);
-			
-			this.controleBotao = -1;
-			
-			escolha = new JPanel();
-			escolha.setLayout(new GridLayout(1, 2));
-			tabuleirao = new GridLayout(QTD_BOTAO, QTD_BOTAO);
-			teste = new BorderLayout();
-			background = new JPanel();
-			tabuleiro = new JPanel();
-			detalhes = new JPanel();
-			detalhes.setBackground(new Color(145, 255, 117));
-			detalhes.setPreferredSize(new Dimension(COMPRIMENTO/5, LARGURA));
-			tabuleiro.setPreferredSize(new Dimension(TAM_BOTAO*10, TAM_BOTAO*10));
-			
-			// Come�arei aqui a estilizar o editor
-			
-			background.setLayout(teste);
-			tabuleiro.setBorder(new EmptyBorder(5, 5, 5, 5));
-			tabuleiro.setLayout(tabuleirao);
-			tabuleiro.setBackground(new Color(145, 255, 117));
-			detalhes.setBorder(new EmptyBorder(10, 35, 10, 35));
-			detalhes.setLayout(new GridLayout(7, 1, 10, 10));
-			background.add(tabuleiro, BorderLayout.CENTER);
-			background.add(detalhes, BorderLayout.WEST);
-			background.add(this.escolha, BorderLayout.SOUTH);
-			this.escolha.add(this.jogar, 0);
-			this.escolha.add(debug, 1);
-			
-			
-	//		background.add(new JLabel("   "), BorderLayout.SOUTH);
-	//		background.add(new JPanel());
-			
-			// Adicionando inimigos!!!
-			
-			
-			for (int i = 0; i < QTD_BOTAO; i++) {
-	            for (int j = 0; j < QTD_BOTAO; j++) {
-	                panels[i][j] = new JPanel();
-	                panels[i][j].setBorder(new EmptyBorder(0 , 0, 0, 0));
-	                botoes[i][j] = new Vazio();
-	                botoes[i][j].addActionListener(this);
-	                panels[i][j].add(botoes[i][j]);
-	                tabuleiro.add(botoes[i][j], i*5+j);
-	            }
-	        }
-			
-			
-			this.inimigosAleatorios();
-			this.LagoAleatorio();
-
-			// Adicionando botoes no de escolha
-	        detalhes.add(bandeira);
-	        detalhes.add(bomba);
-	        detalhes.add(espiao);
-	        detalhes.add(soldado);
-	        detalhes.add(cabo);
-	        detalhes.add(marechal);
-	        detalhes.add(desfazer);
-	        
-	        
-	        // Adicionando ActionListener para os botoes do Editor
-	        
-	        this.bandeira.addActionListener(this);
-	        this.bomba.addActionListener(this);
-	        this.espiao.addActionListener(this);
-	        this.soldado.addActionListener(this);
-	        this.cabo.addActionListener(this);
-	        this.marechal.addActionListener(this);
-	        this.desfazer.addActionListener(this);
-	        this.jogar.addActionListener(this);
-	        this.debug.addActionListener(this);
-	        
-	        this.getContentPane().add(background);
-			this.revalidate();
-	//		this.repaint();
-		}
-		else if (tipo == 1) {
-
-			this.jogao.setLocationRelativeTo(null);
-			this.jogao.setVisible(true);
-		}
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(150, 50, COMPRIMENTO, LARGURA);
 		
+		// Chamadas de construtores:
+		this.addComponentListener(this);
+		this.setResizable(false);
+		
+		this.controleBotao = -1;
+		
+		escolha = new JPanel();
+		escolha.setLayout(new GridLayout(1, 3));
+		tabuleirao = new GridLayout(QTD_BOTAO, QTD_BOTAO);
+		teste = new BorderLayout();
+		background = new JPanel();
+		tabuleiro = new JPanel();
+		detalhes = new JPanel();
+		detalhes.setBackground(new Color(145, 255, 117));
+		detalhes.setPreferredSize(new Dimension(COMPRIMENTO/5, LARGURA));
+		tabuleiro.setPreferredSize(new Dimension(TAM_BOTAO*10, TAM_BOTAO*10));
+		
+		// Come�arei aqui a estilizar o editor
+		
+		background.setLayout(teste);
+		tabuleiro.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tabuleiro.setLayout(tabuleirao);
+		tabuleiro.setBackground(new Color(145, 255, 117));
+		detalhes.setBorder(new EmptyBorder(10, 35, 10, 35));
+		detalhes.setLayout(new GridLayout(7, 1, 10, 10));
+		background.add(tabuleiro, BorderLayout.CENTER);
+		background.add(detalhes, BorderLayout.WEST);
+		background.add(this.escolha, BorderLayout.SOUTH);
+		
+		
+		this.escolha.add(this.jogar, 0);
+		this.escolha.add(this.random, 1);
+		this.escolha.add(debug, 2);
+		
+		
+//		background.add(new JLabel("   "), BorderLayout.SOUTH);
+//		background.add(new JPanel());
+		
+		// Adicionando inimigos!!!
+		
+		
+		for (int i = 0; i < QTD_BOTAO; i++) {
+            for (int j = 0; j < QTD_BOTAO; j++) {
+                panels[i][j] = new JPanel();
+                panels[i][j].setBorder(new EmptyBorder(0 , 0, 0, 0));
+                botoes[i][j] = new Vazio();
+                botoes[i][j].addActionListener(this);
+                panels[i][j].add(botoes[i][j]);
+                tabuleiro.add(botoes[i][j], i*5+j);
+            }
+        }
+		
+		
+		this.inimigosAleatorios();
+		this.LagoAleatorio();
+
+		// Adicionando botoes no de escolha
+        detalhes.add(bandeira);
+        detalhes.add(bomba);
+        detalhes.add(espiao);
+        detalhes.add(soldado);
+        detalhes.add(cabo);
+        detalhes.add(marechal);
+        detalhes.add(desfazer);
+        
+        
+        // Adicionando ActionListener para os botoes do Editor
+        
+        this.bandeira.addActionListener(this);
+        this.bomba.addActionListener(this);
+        this.espiao.addActionListener(this);
+        this.soldado.addActionListener(this);
+        this.cabo.addActionListener(this);
+        this.marechal.addActionListener(this);
+        this.desfazer.addActionListener(this);
+        this.jogar.addActionListener(this);
+        this.debug.addActionListener(this);
+        this.random.addActionListener(this);
+        
+        this.getContentPane().add(background);
+		this.revalidate();
+//		this.repaint();
 	}
 	
 
@@ -220,12 +216,18 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 		
 		else if (e.getSource() == this.jogar) {
 			this.dispose();
-			jogao = new JanelaJogo(botoes);
+			jogao = new JanelaJogo(botoes, 0);
 			jogao.setLocationRelativeTo(this);
 			jogao.setVisible(true);
 		}
 		else if (e.getSource() == this.debug) {
 			this.Debugao();
+		}
+		else if (e.getSource() == this.random) {
+			this.dispose();
+			jogao = new JanelaJogo(botoes, 1);
+			jogao.setLocationRelativeTo(this);
+			jogao.setVisible(true);
 		}
 		
 		// Abaixo � o algoritmo para checar a o lugar selecionado e trocar pela pe�a desejada!
