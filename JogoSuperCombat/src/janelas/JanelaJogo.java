@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import auxiliar.Constantes;
+import auxiliar.ValorIA;
 
 public class JanelaJogo extends JFrame implements ComponentListener, ActionListener {
 	
@@ -540,6 +541,25 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 			}
 		}
 	}
+	
+	
+	public void movimentosIA() {
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				
+				if (botoes[i][j] instanceof Marechal && ((Marechal) botoes[i][j]).getTime() == 1) {
+					if (botoes[i-1][j] instanceof Vazio || botoes[i][j-1] instanceof Vazio
+							|| botoes[i+1][j] instanceof Vazio || botoes[i][j+1] instanceof Vazio) {
+						if (ValorIA.joystickIA < ValorIA.MOVE_MARECHAL){
+							ValorIA.joystickIA = ValorIA.MOVE_MARECHAL;
+						}
+					}
+				}
+				
+			}
+		}
+	}
+	
 	
 	public void Debugao() {
 		auxiliar.debugador++;

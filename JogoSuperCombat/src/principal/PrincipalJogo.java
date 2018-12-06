@@ -39,7 +39,7 @@ public class PrincipalJogo implements ActionListener {
 				
 			}
 			else if (jogo.modoJanela == jogo.getEDITOR()) {
-				jogo.inicializaEditor(0);
+				jogo.inicializaEditor(1);
 			}
 			else if(jogo.getModoJanela() == jogo.getALEATORIO()) {
 				
