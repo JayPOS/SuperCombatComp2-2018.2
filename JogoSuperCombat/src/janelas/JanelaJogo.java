@@ -2,7 +2,6 @@ package janelas;
 
 import botoes.*;
 
-import javax.swing.JFrame;
 import javax.swing.border.EmptyBorder;
 
 import auxiliar.ControleVar;
@@ -47,7 +46,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 	
 	private JButton[][] botoes;
 
-	public JanelaJogo(JButton botoes[][], int random) {
+	public JanelaJogo(JButton botoes[][]) {
 		super("Super Combat");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 50, COMPRIMENTO, LARGURA);
@@ -79,18 +78,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 		
 		for (int i = 0; i < QTD_BOTAO; i++) {
             for (int j = 0; j < QTD_BOTAO; j++) {
-            	if (random == 0) {
-            		tabuleiro.add(botoes[i][j]);
-            	}  
-            	else if (random == 1) {
-            		if (i >= 3) {
-            			// Aliados aleatórios vai rodar aqui!
-            			
-            			
-            			
-            		}
-            		tabuleiro.add(botoes[i][j]);
-            	}
+            	tabuleiro.add(botoes[i][j]);
                 botoes[i][j].addActionListener(this);
             }
         }
@@ -139,7 +127,8 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 						
 					// Checa se o espiao pode mover e se puder move! ----------------------
 						
-						if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Espiao) {
+						if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Espiao
+								&& ((Espiao) botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
 							System.out.println("Entrei1");
 							if (auxiliar.modulo(i-auxiliar.getX()) == 1 && auxiliar.modulo(j-auxiliar.getY()) == 0) {
 	            				tabuleiro.remove(botoes[i][j]);
@@ -173,7 +162,8 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 						
 			// Checa se o Marechal pode mover e se puder move! ----------------------
 						
-						else if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Marechal) {
+						else if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Marechal
+								&& ((Marechal) botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
 							System.out.println("Entrei2");
 							if (auxiliar.modulo(i-auxiliar.getX()) == 1 && auxiliar.modulo(j-auxiliar.getY()) == 0) {
 	            				tabuleiro.remove(botoes[i][j]);
@@ -208,7 +198,8 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 						
 						// Checa se o Cabo pode mover e se puder move! ----------------------
 						
-						if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof CaboArmeiro) {
+						if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof CaboArmeiro
+								&& ((CaboArmeiro) botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
 							System.out.println("opa");
 							if (auxiliar.modulo(i-auxiliar.getX()) == 1 && auxiliar.modulo(j-auxiliar.getY()) == 0 || 
 									auxiliar.modulo(i-auxiliar.getX()) == 0 && auxiliar.modulo(j-auxiliar.getY()) == 1) {
@@ -229,7 +220,8 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 						
 						// Checa se o Soldado pode mover e se puder move! ----------------------
 						
-						if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Soldado) {
+						if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Soldado
+								&& ((Soldado) botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
 							if (auxiliar.modulo(i-auxiliar.getX()) == 0) {
 								tabuleiro.remove(botoes[i][j]);
 								this.botoes[i][j] = new Soldado(0);
@@ -264,7 +256,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 					
 		// SE O BOTAO SELECIONADO FOR OU BANDEIRA DO TIME AZUL OU BOMBA DO TIME AZUL. A ESCOLHA DA PE�A E RESETADA ------------
 					
-					if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Bandeira && 
+					else if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Bandeira && 
 						((Bandeira)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0 ||
 								botoes[auxiliar.getX()][auxiliar.getY()] instanceof Bomba && 
 								((Bomba)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
@@ -273,10 +265,276 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 						break;
 					}
 					
-					// Ataque 
-					if (botoes[i][j] instanceof Espiao && 
+					// ATAQUE AO ESPIAOOOOO -------------------------------------------------------
+					// --------------------------------------------------------------------------
+					// ---------------------------------------------------------------------------- !!
+					
+					
+					else if (botoes[i][j] instanceof Espiao && 
 							((Espiao)botoes[i][j]).getTime() == 1) {
+						if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Bandeira &&
+								((Bandeira)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0 || botoes[i][j] instanceof Vazio) {
+							
+						}
+						else {
+							if (auxiliar.modulo(i-auxiliar.getX()) == 1 && auxiliar.modulo(j-auxiliar.getY()) == 0 || 
+									auxiliar.modulo(i-auxiliar.getX()) == 0 && auxiliar.modulo(j-auxiliar.getY()) == 1) {
+								
+								tabuleiro.remove(botoes[i][j]);
+								
+								if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Marechal &&
+								((Marechal)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+									botoes[i][j] = new Marechal(0);
+								}
+								else if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Soldado &&
+										((Soldado)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+									botoes[i][j] = new Soldado(0);
+								}
+								else if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof CaboArmeiro &&
+										((CaboArmeiro)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+									botoes[i][j] = new CaboArmeiro(0);
+								}
+								else if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Espiao &&
+										((Espiao)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+									botoes[i][j] = new Vazio();
+								}
+	            				
+	            				
+	            				
+	            				
+	                			tabuleiro.add(botoes[i][j], i*5+j);
+	                			this.botoes[i][j].addActionListener(this);
+	                			
+	            				tabuleiro.remove(botoes[auxiliar.getX()][auxiliar.getY()]);
+	            				botoes[auxiliar.getX()][auxiliar.getY()] = new Vazio();
+		            			tabuleiro.add(botoes[auxiliar.getX()][auxiliar.getY()], auxiliar.getX()*5+auxiliar.getY());
+		            			this.botoes[auxiliar.getX()][auxiliar.getY()].addActionListener(this);
+	
+								this.revalidate();
+								auxiliar.click = 0;
+								
+							} 
+						}
+					}
+					
+					/*ATAQUE À BANDEIRA -----------------------------------------------
+					 * ----------------------------------------------------------------------
+					 * -------------------------------------------------------- !!!!*/
+					
+					else if (botoes[i][j] instanceof Bandeira &&
+								((Bandeira)botoes[i][j]).getTime() == 1) {
+						if (auxiliar.modulo(i-auxiliar.getX()) == 1 && auxiliar.modulo(j-auxiliar.getY()) == 0 || 
+								auxiliar.modulo(i-auxiliar.getX()) == 0 && auxiliar.modulo(j-auxiliar.getY()) == 1) {
+							if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Marechal &&
+								((Marechal)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0
+								|| botoes[auxiliar.getX()][auxiliar.getY()] instanceof Soldado &&
+								((Soldado)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0
+								|| botoes[auxiliar.getX()][auxiliar.getY()] instanceof CaboArmeiro &&
+								((CaboArmeiro)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0
+								|| botoes[auxiliar.getX()][auxiliar.getY()] instanceof Espiao &&
+								((Espiao)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+										
+					// CONDIÇÃO PARA GANHAR O JOGO!!! ---------------------------------------------
+									if (JOptionPane.showConfirmDialog(this, "Você ganhou o jogo! Parabéns!", "Ganhou!",
+												JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0) {
+										this.dispose();
+									}
+									
+								
+								}
+							
+						}
+					}
+					
+					/* ATAQUE À BOMBA -----------------------------------------------------------
+					 * ------------------------------------------------------------------------------
+					 * -------------------------------------------------------------------------------- !!!*/
+					
+					else if (botoes[i][j] instanceof Bomba &&
+							((Bomba)botoes[i][j]).getTime() == 1) {
+						if (auxiliar.modulo(i-auxiliar.getX()) == 1 && auxiliar.modulo(j-auxiliar.getY()) == 0 || 
+								auxiliar.modulo(i-auxiliar.getX()) == 0 && auxiliar.modulo(j-auxiliar.getY()) == 1) {
+							
+							tabuleiro.remove(botoes[i][j]);
+							
+							if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Marechal &&
+									((Marechal)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0
+									|| botoes[auxiliar.getX()][auxiliar.getY()] instanceof Soldado &&
+									((Soldado)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0
+									|| botoes[auxiliar.getX()][auxiliar.getY()] instanceof Espiao &&
+									((Espiao)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+								
+								
+								botoes[i][j] = new Vazio();
+								tabuleiro.add(botoes[i][j], i*5+j);
+	                			this.botoes[i][j].addActionListener(this);
+	                			
+	            				tabuleiro.remove(botoes[auxiliar.getX()][auxiliar.getY()]);
+	            				botoes[auxiliar.getX()][auxiliar.getY()] = new Vazio();
+		            			tabuleiro.add(botoes[auxiliar.getX()][auxiliar.getY()], auxiliar.getX()*5+auxiliar.getY());
+		            			this.botoes[auxiliar.getX()][auxiliar.getY()].addActionListener(this);
+	
+								this.revalidate();
+								auxiliar.click = 0;
+							}
+							else if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof CaboArmeiro &&
+								((CaboArmeiro)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+								botoes[i][j] = new CaboArmeiro(0);
+								
+								tabuleiro.add(botoes[i][j], i*5+j);
+	                			this.botoes[i][j].addActionListener(this);
+	                			
+	            				tabuleiro.remove(botoes[auxiliar.getX()][auxiliar.getY()]);
+	            				botoes[auxiliar.getX()][auxiliar.getY()] = new Vazio();
+		            			tabuleiro.add(botoes[auxiliar.getX()][auxiliar.getY()], auxiliar.getX()*5+auxiliar.getY());
+		            			this.botoes[auxiliar.getX()][auxiliar.getY()].addActionListener(this);
+	
+								this.revalidate();
+								auxiliar.click = 0;
+							}
+						}
+					}
+					
+					
+					/*ATAQUE AO SOLDADO -----------------------------------------------------
+					 * -----------------------------------------------------------------------
+					 * -------------------------------------------------------------------------- !!!*/
+					
+					else if (botoes[i][j] instanceof Soldado &&
+							((Soldado)botoes[i][j]).getTime() == 1) {
+						if (auxiliar.modulo(i-auxiliar.getX()) == 1 && auxiliar.modulo(j-auxiliar.getY()) == 0 || 
+								auxiliar.modulo(i-auxiliar.getX()) == 0 && auxiliar.modulo(j-auxiliar.getY()) == 1) {
 						
+							if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Espiao &&
+										((Espiao)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+			        			
+			    				tabuleiro.remove(botoes[auxiliar.getX()][auxiliar.getY()]);
+			    				botoes[auxiliar.getX()][auxiliar.getY()] = new Vazio();
+			        			tabuleiro.add(botoes[auxiliar.getX()][auxiliar.getY()], auxiliar.getX()*5+auxiliar.getY());
+			        			this.botoes[auxiliar.getX()][auxiliar.getY()].addActionListener(this);
+			
+								this.revalidate();
+								auxiliar.click = 0;
+							}
+							else {
+								tabuleiro.remove(botoes[i][j]);
+								if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Marechal &&
+										((Marechal)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+									
+									botoes[i][j] = new Marechal(0);
+								}
+								else if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof CaboArmeiro &&
+										((CaboArmeiro)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+									botoes[i][j] = new CaboArmeiro(0);
+								}
+								else if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Soldado &&
+										((Soldado)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+									botoes[i][j] = new Vazio();
+								}
+								tabuleiro.add(botoes[i][j], i*5+j);
+			        			this.botoes[i][j].addActionListener(this);
+			        			
+			    				tabuleiro.remove(botoes[auxiliar.getX()][auxiliar.getY()]);
+			    				botoes[auxiliar.getX()][auxiliar.getY()] = new Vazio();
+			        			tabuleiro.add(botoes[auxiliar.getX()][auxiliar.getY()], auxiliar.getX()*5+auxiliar.getY());
+			        			this.botoes[auxiliar.getX()][auxiliar.getY()].addActionListener(this);
+			
+								this.revalidate();
+								auxiliar.click = 0;
+							}
+						}
+					}
+					
+					/*ATAQUE AO CABO ------------------------------------------------------------------------
+					 * --------------------------------------------------------------------------------------
+					 * ------------------------------------------------------------------------------------!!*/
+					
+					else if (botoes[i][j] instanceof CaboArmeiro &&
+							((CaboArmeiro)botoes[i][j]).getTime() == 1) {
+						if (auxiliar.modulo(i-auxiliar.getX()) == 1 && auxiliar.modulo(j-auxiliar.getY()) == 0 || 
+								auxiliar.modulo(i-auxiliar.getX()) == 0 && auxiliar.modulo(j-auxiliar.getY()) == 1) {
+						
+							if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Espiao &&
+									((Espiao)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0 ||
+									botoes[auxiliar.getX()][auxiliar.getY()] instanceof Soldado &&
+										((Soldado)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+			            			
+		        				tabuleiro.remove(botoes[auxiliar.getX()][auxiliar.getY()]);
+		        				botoes[auxiliar.getX()][auxiliar.getY()] = new Vazio();
+		            			tabuleiro.add(botoes[auxiliar.getX()][auxiliar.getY()], auxiliar.getX()*5+auxiliar.getY());
+		            			this.botoes[auxiliar.getX()][auxiliar.getY()].addActionListener(this);
+		
+								this.revalidate();
+								auxiliar.click = 0;
+							}
+							else {
+								tabuleiro.remove(botoes[i][j]);
+								if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Marechal &&
+										((Marechal)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+									
+									botoes[i][j] = new Marechal(0);
+								}
+								else if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof CaboArmeiro &&
+										((CaboArmeiro)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+									botoes[i][j] = new Vazio();
+								}
+								tabuleiro.add(botoes[i][j], i*5+j);
+	                			this.botoes[i][j].addActionListener(this);
+	                			
+	            				tabuleiro.remove(botoes[auxiliar.getX()][auxiliar.getY()]);
+	            				botoes[auxiliar.getX()][auxiliar.getY()] = new Vazio();
+		            			tabuleiro.add(botoes[auxiliar.getX()][auxiliar.getY()], auxiliar.getX()*5+auxiliar.getY());
+		            			this.botoes[auxiliar.getX()][auxiliar.getY()].addActionListener(this);
+	
+								this.revalidate();
+								auxiliar.click = 0;
+							}
+						}
+					}
+					
+					
+					
+					else if (botoes[i][j] instanceof Marechal &&
+							((Marechal)botoes[i][j]).getTime() == 1) {
+						
+						if (auxiliar.modulo(i-auxiliar.getX()) == 1 && auxiliar.modulo(j-auxiliar.getY()) == 0 || 
+								auxiliar.modulo(i-auxiliar.getX()) == 0 && auxiliar.modulo(j-auxiliar.getY()) == 1) {
+							if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Soldado &&
+									((Soldado)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0 ||
+										botoes[auxiliar.getX()][auxiliar.getY()] instanceof CaboArmeiro &&
+										((CaboArmeiro)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+			            			
+		        				tabuleiro.remove(botoes[auxiliar.getX()][auxiliar.getY()]);
+		        				botoes[auxiliar.getX()][auxiliar.getY()] = new Vazio();
+		            			tabuleiro.add(botoes[auxiliar.getX()][auxiliar.getY()], auxiliar.getX()*5+auxiliar.getY());
+		            			this.botoes[auxiliar.getX()][auxiliar.getY()].addActionListener(this);
+		
+								this.revalidate();
+								auxiliar.click = 0;
+							}
+							else {
+								tabuleiro.remove(botoes[i][j]);
+								if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Marechal &&
+										((Marechal)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+									
+									botoes[i][j] = new Vazio();
+								}
+								else if (botoes[auxiliar.getX()][auxiliar.getY()] instanceof Espiao &&
+									((Espiao)botoes[auxiliar.getX()][auxiliar.getY()]).getTime() == 0) {
+									botoes[i][j] =  new Espiao(0);
+								}
+								tabuleiro.add(botoes[i][j], i*5+j);
+	                			this.botoes[i][j].addActionListener(this);
+	                			
+	            				tabuleiro.remove(botoes[auxiliar.getX()][auxiliar.getY()]);
+	            				botoes[auxiliar.getX()][auxiliar.getY()] = new Vazio();
+		            			tabuleiro.add(botoes[auxiliar.getX()][auxiliar.getY()], auxiliar.getX()*5+auxiliar.getY());
+		            			this.botoes[auxiliar.getX()][auxiliar.getY()].addActionListener(this);
+	
+								this.revalidate();
+								auxiliar.click = 0;
+							}
+						}
 					}
 				}
 			}

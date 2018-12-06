@@ -24,14 +24,9 @@ public class PrincipalJogo implements ActionListener {
 		
 	}
 	public void inicializaEditor(int tipo) {
-		if (tipo == 0) {
-			this.controladorJanela = new JanelaEditor2(tipo);
-			this.controladorJanela.setLocationRelativeTo(null);
-			this.controladorJanela.setVisible(true);
-		}
-		else {
-			this.controladorJanela = new EditorAleatorio();
-		}
+		this.controladorJanela = new JanelaEditor2(tipo);
+		this.controladorJanela.setLocationRelativeTo(null);
+		this.controladorJanela.setVisible(true);
 	}
 	public void inicializaJogao() {
 		this.controladorJanela.setVisible(true);

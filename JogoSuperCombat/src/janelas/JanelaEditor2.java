@@ -43,7 +43,7 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	private Aleatorio random =  new Aleatorio();
 	private Jogar jogar = new Jogar();
 	
-	public int debugador = 0;
+	public ControleVar joystick =  new ControleVar();
 	
 	private final int COMPRIMENTO = 800;
 	private final int LARGURA = 600;
@@ -53,7 +53,6 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 //	private ControleBotao controle[] = new ControleBotao[] {};
 	
 	private List<Integer> listaPosi = new ArrayList<Integer>();
-	private Constantes constante = new Constantes();
 	
 	private int CONT_BANDEIRA = 0;
 	private int CONT_BOMBAS = 0;
@@ -69,6 +68,94 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	
 	public JanelaEditor2(int tipo) {
 		super("Super Combat");
+		if (tipo == 0) {
+				
+			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			setBounds(150, 50, COMPRIMENTO, LARGURA);
+			
+			// Chamadas de construtores:
+			this.addComponentListener(this);
+			this.setResizable(false);
+			
+			this.controleBotao = -1;
+			
+			escolha = new JPanel();
+			escolha.setLayout(new GridLayout(1, 2));
+			tabuleirao = new GridLayout(QTD_BOTAO, QTD_BOTAO);
+			teste = new BorderLayout();
+			background = new JPanel();
+			tabuleiro = new JPanel();
+			detalhes = new JPanel();
+			detalhes.setBackground(new Color(145, 255, 117));
+			detalhes.setPreferredSize(new Dimension(COMPRIMENTO/5, LARGURA));
+			tabuleiro.setPreferredSize(new Dimension(TAM_BOTAO*10, TAM_BOTAO*10));
+			
+			// Come�arei aqui a estilizar o editor
+			
+			background.setLayout(teste);
+			tabuleiro.setBorder(new EmptyBorder(5, 5, 5, 5));
+			tabuleiro.setLayout(tabuleirao);
+			tabuleiro.setBackground(new Color(145, 255, 117));
+			detalhes.setBorder(new EmptyBorder(10, 35, 10, 35));
+			detalhes.setLayout(new GridLayout(7, 1, 10, 10));
+			background.add(tabuleiro, BorderLayout.CENTER);
+			background.add(detalhes, BorderLayout.WEST);
+			background.add(this.escolha, BorderLayout.SOUTH);
+			
+			
+			this.escolha.add(this.jogar, 0);
+			this.escolha.add(debug, 1);
+			
+			
+	//		background.add(new JLabel("   "), BorderLayout.SOUTH);
+	//		background.add(new JPanel());
+			
+			// Adicionando inimigos!!!
+			
+			
+			for (int i = 0; i < QTD_BOTAO; i++) {
+	            for (int j = 0; j < QTD_BOTAO; j++) {
+	                panels[i][j] = new JPanel();
+	                panels[i][j].setBorder(new EmptyBorder(0 , 0, 0, 0));
+	                botoes[i][j] = new Vazio();
+	                botoes[i][j].addActionListener(this);
+	                panels[i][j].add(botoes[i][j]);
+	                tabuleiro.add(botoes[i][j], i*5+j);
+	            }
+	        }
+			
+//			this.aliadosAleatorios();
+			this.inimigosAleatorios();
+			this.LagoAleatorio();
+	
+			// Adicionando botoes no de escolha
+	        detalhes.add(bandeira);
+	        detalhes.add(bomba);
+	        detalhes.add(espiao);
+	        detalhes.add(soldado);
+	        detalhes.add(cabo);
+	        detalhes.add(marechal);
+	        detalhes.add(desfazer);
+	        
+	        
+	        // Adicionando ActionListener para os botoes do Editor
+	        
+	        this.bandeira.addActionListener(this);
+	        this.bomba.addActionListener(this);
+	        this.espiao.addActionListener(this);
+	        this.soldado.addActionListener(this);
+	        this.cabo.addActionListener(this);
+	        this.marechal.addActionListener(this);
+	        this.desfazer.addActionListener(this);
+	        this.jogar.addActionListener(this);
+	        this.debug.addActionListener(this);
+	        this.random.addActionListener(this);
+	        
+	        this.getContentPane().add(background);
+			this.revalidate();
+	//		this.repaint();
+		}
+		else if (tipo == 1) {
 			
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(150, 50, COMPRIMENTO, LARGURA);
@@ -104,8 +191,8 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 		
 		
 		this.escolha.add(this.jogar, 0);
-		this.escolha.add(this.random, 1);
-		this.escolha.add(debug, 2);
+//		this.escolha.add(this.random, 1);
+		this.escolha.add(debug, 1);
 		
 		
 //		background.add(new JLabel("   "), BorderLayout.SOUTH);
@@ -125,36 +212,37 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
             }
         }
 		
-		
+		this.aliadosAleatorios();
 		this.inimigosAleatorios();
 		this.LagoAleatorio();
 
 		// Adicionando botoes no de escolha
-        detalhes.add(bandeira);
-        detalhes.add(bomba);
-        detalhes.add(espiao);
-        detalhes.add(soldado);
-        detalhes.add(cabo);
-        detalhes.add(marechal);
-        detalhes.add(desfazer);
+//        detalhes.add(bandeira);
+//        detalhes.add(bomba);
+//        detalhes.add(espiao);
+//        detalhes.add(soldado);
+//        detalhes.add(cabo);
+//        detalhes.add(marechal);
+//        detalhes.add(desfazer);
         
         
         // Adicionando ActionListener para os botoes do Editor
         
-        this.bandeira.addActionListener(this);
-        this.bomba.addActionListener(this);
-        this.espiao.addActionListener(this);
-        this.soldado.addActionListener(this);
-        this.cabo.addActionListener(this);
-        this.marechal.addActionListener(this);
-        this.desfazer.addActionListener(this);
+//        this.bandeira.addActionListener(this);
+//        this.bomba.addActionListener(this);
+//        this.espiao.addActionListener(this);
+//        this.soldado.addActionListener(this);
+//        this.cabo.addActionListener(this);
+//        this.marechal.addActionListener(this);
+//        this.desfazer.addActionListener(this);
         this.jogar.addActionListener(this);
         this.debug.addActionListener(this);
-        this.random.addActionListener(this);
+//        this.random.addActionListener(this);
         
         this.getContentPane().add(background);
 		this.revalidate();
 //		this.repaint();
+		}
 	}
 	
 
@@ -193,39 +281,41 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == this.bandeira) {
-			this.controleBotao = constante.BANDEIRA;
+			this.controleBotao = Constantes.BANDEIRA;
 		}
 		else if(e.getSource() == this.bomba) {
-			this.controleBotao = constante.BOMBA;
+			this.controleBotao = Constantes.BOMBA;
 		}
 		else if (e.getSource() == this.espiao) {
-			this.controleBotao = constante.ESPIAO;
+			this.controleBotao = Constantes.ESPIAO;
 		}
 		else if (e.getSource() == this.soldado) {
-			this.controleBotao = constante.SOLDADO;
+			this.controleBotao = Constantes.SOLDADO;
 		}
 		else if (e.getSource() == this.cabo) {
-			this.controleBotao = constante.CABO;
+			this.controleBotao = Constantes.CABO;
 		}
 		else if (e.getSource() == this.marechal) {
-			this.controleBotao = constante.MARECHAL;
+			this.controleBotao = Constantes.MARECHAL;
 		}
 		else if (e.getSource() == this.desfazer) {
 			this.controleBotao = 0;
 		}
 		
 		else if (e.getSource() == this.jogar) {
-			this.dispose();
-			jogao = new JanelaJogo(botoes, 0);
-			jogao.setLocationRelativeTo(this);
-			jogao.setVisible(true);
+			if (joystick.qtd_pecas == Constantes.LIM_PECAS) {
+				this.dispose();
+				jogao = new JanelaJogo(botoes);
+				jogao.setLocationRelativeTo(this);
+				jogao.setVisible(true);
+			}
 		}
 		else if (e.getSource() == this.debug) {
 			this.Debugao();
 		}
 		else if (e.getSource() == this.random) {
 			this.dispose();
-			jogao = new JanelaJogo(botoes, 1);
+			jogao = new JanelaJogo(botoes);
 			jogao.setLocationRelativeTo(this);
 			jogao.setVisible(true);
 		}
@@ -245,6 +335,7 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	            			this.revalidate();
 	            			
 	            			this.CONT_BANDEIRA--;
+	            			joystick.qtd_pecas--;
             			}
             			else if (botoes[i][j] instanceof Bomba) {
             				tabuleiro.remove(botoes[i][j]);
@@ -254,6 +345,7 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	            			this.revalidate();
 	            			
 	            			this.CONT_BOMBAS--;
+	            			joystick.qtd_pecas--;
             			}
             			else if (botoes[i][j] instanceof Espiao) {
             				tabuleiro.remove(botoes[i][j]);
@@ -263,6 +355,7 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	            			this.revalidate();
 	            			
 	            			this.CONT_ESPIAO--;
+	            			joystick.qtd_pecas--;
             			}
             			else if (botoes[i][j] instanceof Soldado) {
             				tabuleiro.remove(botoes[i][j]);
@@ -272,6 +365,7 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	            			this.revalidate();
 	            			
 	            			this.CONT_SOLDADO--;
+	            			joystick.qtd_pecas--;
             			}
             			else if (botoes[i][j] instanceof CaboArmeiro) {
             				tabuleiro.remove(botoes[i][j]);
@@ -281,6 +375,7 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	            			this.revalidate();
 	            			
 	            			this.CONT_CABO--;
+	            			joystick.qtd_pecas--;
             			}
             			else if (botoes[i][j] instanceof Marechal) {
             				tabuleiro.remove(botoes[i][j]);
@@ -290,67 +385,75 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	            			this.revalidate();
 	            			
 	            			this.CONT_MARECHAL--;
+	            			joystick.qtd_pecas--;
             			}
             			break;
             			
             		case 1:
-            			if (this.CONT_BANDEIRA < constante.LIM_BANDEIRA){
+            			if (this.CONT_BANDEIRA < Constantes.LIM_BANDEIRA){
 	            			tabuleiro.remove(botoes[i][j]);
 	            			botoes[i][j] = new Bandeira(0);
 	            			tabuleiro.add(botoes[i][j], i*5+j);
 	            			this.botoes[i][j].addActionListener(this);
 	            			this.revalidate();
 	            			this.CONT_BANDEIRA++;
+	            			joystick.qtd_pecas++;
+	            			
             			}
             			break;
             		case 2:
-            			if (this.CONT_BOMBAS < constante.LIM_BOMBAS) {
+            			if (this.CONT_BOMBAS < Constantes.LIM_BOMBAS) {
 	            			tabuleiro.remove(botoes[i][j]);
 	            			botoes[i][j] = new Bomba(0);
 	            			tabuleiro.add(botoes[i][j], i*5+j);
 	            			this.botoes[i][j].addActionListener(this);
 	            			this.revalidate();
 	            			this.CONT_BOMBAS++;
+	            			joystick.qtd_pecas++;
             			}
             			break;
             		case 3:
-            			if (this.CONT_ESPIAO < constante.LIM_ESPIAO) {
+            			if (this.CONT_ESPIAO < Constantes.LIM_ESPIAO) {
             				tabuleiro.remove(botoes[i][j]);
             				botoes[i][j] = new Espiao(0);
                 			tabuleiro.add(botoes[i][j], i*5+j);
                 			this.botoes[i][j].addActionListener(this);
                 			this.revalidate();
                 			this.CONT_ESPIAO++;
+                			joystick.qtd_pecas++;
             			}
             			break;
             		case 4:
-            			if (this.CONT_SOLDADO < constante.LIM_SOLDADOS) {
+            			if (this.CONT_SOLDADO < Constantes.LIM_SOLDADOS) {
             				tabuleiro.remove(botoes[i][j]);
             				botoes[i][j] = new Soldado(0);
                 			tabuleiro.add(botoes[i][j], i*5+j);
                 			this.botoes[i][j].addActionListener(this);
                 			this.revalidate();
                 			this.CONT_SOLDADO++;
+                			joystick.qtd_pecas++;
             			}
             			break;
             		case 5:
-            			if (this.CONT_CABO < constante.LIM_CABO) {
+            			if (this.CONT_CABO < Constantes.LIM_CABO) {
             				tabuleiro.remove(botoes[i][j]);
             				botoes[i][j] = new CaboArmeiro(0);
                 			tabuleiro.add(botoes[i][j], (i*5+j));
                 			this.botoes[i][j].addActionListener(this);
                 			this.revalidate();
                 			this.CONT_CABO++;
+                			joystick.qtd_pecas++;
             			}
             			break;
             		case 6:
-            			if (this.CONT_MARECHAL < constante.LIM_MARECHAL) {
+            			if (this.CONT_MARECHAL < Constantes.LIM_MARECHAL) {
             				tabuleiro.remove(botoes[i][j]);
             				botoes[i][j] = new Marechal(0);
                 			tabuleiro.add(botoes[i][j], i*5+j);
                 			this.botoes[i][j].addActionListener(this);
                 			this.revalidate();
                 			this.CONT_MARECHAL++;
+                			joystick.qtd_pecas++;
             			}
             			break;
 //            		case 0:
@@ -367,49 +470,51 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	}
 	// fun��o de gerador de inimigos!
 	public void inimigosAleatorios() {
-		this.listaPosi.add(constante.BANDEIRA);
-		this.listaPosi.add(constante.MARECHAL);
-		this.listaPosi.add(constante.SOLDADO);
-		this.listaPosi.add(constante.ESPIAO);
+		this.listaPosi.add(Constantes.BANDEIRA);
+		this.listaPosi.add(Constantes.MARECHAL);
+		this.listaPosi.add(Constantes.SOLDADO);
+		this.listaPosi.add(Constantes.ESPIAO);
 		for (int i = 0; i < 2; i++) {
-			this.listaPosi.add(constante.BOMBA);
-			this.listaPosi.add(constante.SOLDADO);
-			this.listaPosi.add(constante.CABO);
+			this.listaPosi.add(Constantes.BOMBA);
+			this.listaPosi.add(Constantes.SOLDADO);
+			this.listaPosi.add(Constantes.CABO);
 		}
 		Collections.shuffle(listaPosi);
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 5; j++) {
 				this.tabuleiro.remove(botoes[i][j]);
-				if (listaPosi.get(i*5+j) == constante.BANDEIRA) {
+				if (listaPosi.get(i*5+j) == Constantes.BANDEIRA) {
 					botoes[i][j] = new Bandeira(1);
 	                botoes[i][j].addActionListener(this);
 	                tabuleiro.add(botoes[i][j], i*5+j);
 				}
-				else if (this.listaPosi.get(i*5+j) == constante.BOMBA) {
+				else if (this.listaPosi.get(i*5+j) == Constantes.BOMBA) {
 					botoes[i][j] = new Bomba(1);
 	                botoes[i][j].addActionListener(this);
 	                tabuleiro.add(botoes[i][j], i*5+j);
 				}
-				else if (this.listaPosi.get(i*5+j) == constante.ESPIAO) {
+				else if (this.listaPosi.get(i*5+j) == Constantes.ESPIAO) {
 					botoes[i][j] = new Espiao(1);
 	                botoes[i][j].addActionListener(this);
 	                tabuleiro.add(botoes[i][j], i*5+j);
 				}
-				else if (this.listaPosi.get(i*5+j) == constante.SOLDADO) {
+				else if (this.listaPosi.get(i*5+j) == Constantes.SOLDADO) {
 					botoes[i][j] = new Soldado(1);
 	                botoes[i][j].addActionListener(this);
 	                tabuleiro.add(botoes[i][j], i*5+j);
 				}
-				else if (this.listaPosi.get(i*5+j) == constante.CABO) {
+				else if (this.listaPosi.get(i*5+j) == Constantes.CABO) {
 					botoes[i][j] = new CaboArmeiro(1);
 	                botoes[i][j].addActionListener(this);
 	                tabuleiro.add(botoes[i][j], i*5+j);
 				}
-				else if (this.listaPosi.get(i*5+j) == constante.MARECHAL) {
+				else if (this.listaPosi.get(i*5+j) == Constantes.MARECHAL) {
 					botoes[i][j] = new Marechal(1);
 	                botoes[i][j].addActionListener(this);
 	                tabuleiro.add(botoes[i][j], i*5+j);
-				}
+				}if (i > 2) {
+            		
+            	}
 				this.revalidate();
 			}
 		}
@@ -417,45 +522,45 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	}
 	
 	public void aliadosAleatorios() {
-		this.listaPosi.add(constante.BANDEIRA);
-		this.listaPosi.add(constante.MARECHAL);
-		this.listaPosi.add(constante.SOLDADO);
-		this.listaPosi.add(constante.ESPIAO);
+		this.listaPosi.add(Constantes.BANDEIRA);
+		this.listaPosi.add(Constantes.MARECHAL);
+		this.listaPosi.add(Constantes.SOLDADO);
+		this.listaPosi.add(Constantes.ESPIAO);
 		for (int i = 0; i < 2; i++) {
-			this.listaPosi.add(constante.BOMBA);
-			this.listaPosi.add(constante.SOLDADO);
-			this.listaPosi.add(constante.CABO);
+			this.listaPosi.add(Constantes.BOMBA);
+			this.listaPosi.add(Constantes.SOLDADO);
+			this.listaPosi.add(Constantes.CABO);
 		}
 		Collections.shuffle(listaPosi);
 		for (int i = 3; i < 5; i++) {
 			for (int j = 0; j < 5; j++) {
 				this.tabuleiro.remove(botoes[i][j]);
-				if (listaPosi.get(i*5+j) == constante.BANDEIRA) {
+				if (listaPosi.get((i-3)*5+j) == Constantes.BANDEIRA) {
 					botoes[i][j] = new Bandeira(0);
 	                botoes[i][j].addActionListener(this);
 	                tabuleiro.add(botoes[i][j], i*5+j);
 				}
-				else if (this.listaPosi.get(i*5+j) == constante.BOMBA) {
+				else if (this.listaPosi.get((i-3)*5+j) == Constantes.BOMBA) {
 					botoes[i][j] = new Bomba(0);
 	                botoes[i][j].addActionListener(this);
 	                tabuleiro.add(botoes[i][j], i*5+j);
 				}
-				else if (this.listaPosi.get(i*5+j) == constante.ESPIAO) {
+				else if (this.listaPosi.get((i-3)*5+j) == Constantes.ESPIAO) {
 					botoes[i][j] = new Espiao(0);
 	                botoes[i][j].addActionListener(this);
 	                tabuleiro.add(botoes[i][j], i*5+j);
 				}
-				else if (this.listaPosi.get(i*5+j) == constante.SOLDADO) {
+				else if (this.listaPosi.get((i-3)*5+j) == Constantes.SOLDADO) {
 					botoes[i][j] = new Soldado(0);
 	                botoes[i][j].addActionListener(this);
 	                tabuleiro.add(botoes[i][j], i*5+j);
 				}
-				else if (this.listaPosi.get(i*5+j) == constante.CABO) {
+				else if (this.listaPosi.get((i-3)*5+j) == Constantes.CABO) {
 					botoes[i][j] = new CaboArmeiro(0);
 	                botoes[i][j].addActionListener(this);
 	                tabuleiro.add(botoes[i][j], i*5+j);
 				}
-				else if (this.listaPosi.get(i*5+j) == constante.MARECHAL) {
+				else if (this.listaPosi.get((i-3)*5+j) == Constantes.MARECHAL) {
 					botoes[i][j] = new Marechal(0);
 	                botoes[i][j].addActionListener(this);
 	                tabuleiro.add(botoes[i][j], i*5+j);
@@ -463,6 +568,7 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 				this.revalidate();
 			}
 		}
+		joystick.qtd_pecas = 10;
 		this.listaPosi.removeAll(listaPosi);
 	}
 	
@@ -481,8 +587,8 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	}
 	
 	public void Debugao() {
-		debugador++;
-		if (debugador == 1) {
+		joystick.debugador++;
+		if (joystick.debugador == 1) {
 			for (int i = 0; i < 2; i++) {
 				for (int j = 0; j < 5; j++) {
 					if (botoes[i][j] instanceof Bandeira) {
@@ -507,13 +613,13 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 			}
 			this.revalidate();
 		}
-		else if (debugador == 2) {
+		else if (joystick.debugador == 2) {
 			for (int i = 0; i < 2; i++) {
 				for (int j = 0; j < 5; j++) {
 					this.botoes[i][j].setText("Inimigo");
 				}
 			}
-			debugador = 0;
+			joystick.debugador = 0;
 		}
 	}
 	

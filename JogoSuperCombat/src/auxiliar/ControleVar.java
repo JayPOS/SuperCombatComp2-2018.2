@@ -4,13 +4,14 @@ import javax.swing.JButton;
 
 public class ControleVar {
 	
-	public int debugador, click;
+	public int debugador, click, qtd_pecas;
 	private int X, Y;
 	public JButton Peca;
 
 	public ControleVar() {
 		this.debugador = 0;
 		this.click = 0;
+		this.qtd_pecas = 0;
 		this.X = 0;
 		this.Y = 0;
 		this.Peca = null;
