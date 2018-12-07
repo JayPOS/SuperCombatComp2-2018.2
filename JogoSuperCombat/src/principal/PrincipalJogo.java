@@ -35,11 +35,12 @@ public class PrincipalJogo implements ActionListener {
 	public static void main(String[] args) {
 		try {
 			PrincipalJogo jogo = new PrincipalJogo();
-			Object[] opcoes = {"Editor", "Aleatório"};
+			Object[] opcoes = {"Colocar peças", "Peças aleatórias"};
 			jogo.controladorJanela = new JanelaEditor2(JOptionPane.showOptionDialog(null, 
-					"Selecione o modo de jogo!", 
+					"Selecione como começar o jogo!", 
 					"Super Combat", 
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opcoes, 0));
+			jogo.controladorJanela.setLocationRelativeTo(null);
 			jogo.controladorJanela.setVisible(true);
 			
 			

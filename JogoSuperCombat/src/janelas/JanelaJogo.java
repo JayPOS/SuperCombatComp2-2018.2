@@ -113,10 +113,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 			this.Dica(e);
 		}
 		else if (auxiliar.dicaOn == 0){
-			if (auxiliar.turno == 1) {
-				this.movimentosIA();
-			}
-			else if (auxiliar.turno == 0) {
+			if (auxiliar.turno == 0) {
 				this.movimentos(e);
 				
 			}
@@ -277,6 +274,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 						}
 						auxiliar.click = 0;
 						auxiliar.turno = 1;
+						this.movimentosIA();
 						break;
 					}
 					
@@ -343,6 +341,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 							} 
 						}
 						auxiliar.turno = 1;
+						this.movimentosIA();
 					}
 					
 					/*ATAQUE À BANDEIRA -----------------------------------------------
@@ -424,6 +423,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 							}
 						}
 						auxiliar.turno = 1;
+						this.movimentosIA();
 					}
 					
 					
@@ -477,6 +477,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 							}
 						}
 						auxiliar.turno = 1;
+						this.movimentosIA();
 					}
 					
 					/*ATAQUE AO CABO ------------------------------------------------------------------------
@@ -527,6 +528,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 							}
 						}
 						auxiliar.turno = 1;
+						this.movimentosIA();
 					}
 					
 					
@@ -575,6 +577,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 							}
 						}
 						auxiliar.turno = 1;
+						this.movimentosIA();
 					}
 					
 				}
@@ -585,7 +588,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 	
 	public void movimentosIA() {
 		int ind = random.nextInt(25);
-		int moveType = random.nextInt(2);
+		int moveType = random.nextInt(3);
 		boolean control = false;
 		while (auxiliar.turno == 1) {
 			if (botoes[ind/5][ind%5].getTime() == 1 && botoes[ind/5][ind%5].getMovel() == 1) {
@@ -605,7 +608,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.remove(botoes[(ind/5)+1][ind%5]);
 								botoes[(ind/5)+1][ind%5] = new Marechal(1);
 								if (auxiliar.debugador == 1) {
-									botoes[ind/5][(ind%5)+1].setText("Marechal");
+									botoes[(ind/5)+1][(ind%5)].setText("Marechal");
 								}
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
@@ -632,13 +635,17 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.remove(botoes[(ind/5)+1][ind%5]);
 								botoes[(ind/5)+1][ind%5] = new Marechal(1);
 								if (auxiliar.debugador == 1) {
-									botoes[ind/5][(ind%5)+1].setText("Marechal");
+									botoes[(ind/5)+1][ind%5].setText("Marechal");
 								}
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
 								auxiliar.turno = 0;
 							}
 							else if (botoes[(ind/5)+1][ind%5] instanceof Bandeira && botoes[(ind/5)+1][ind%5].getTime() == 0) {
+								if (JOptionPane.showConfirmDialog(this, "Você perdeu o jogo!", "Perdeu!",
+										JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0) {
+									this.dispose();
+								}
 								
 							}
 							else if (botoes[(ind/5)+1][ind%5] instanceof Bomba && botoes[(ind/5)+1][ind%5].getTime() == 0) {
@@ -650,7 +657,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.remove(botoes[(ind/5)+1][ind%5]);
 								botoes[(ind/5)+1][ind%5] = new Vazio();
 								if (auxiliar.debugador == 1) {
-									botoes[ind/5][(ind%5)+1].setText("Marechal");
+									botoes[(ind/5)+1][ind%5].setText("Marechal");
 								}
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
@@ -665,7 +672,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.remove(botoes[(ind/5)-1][ind%5]);
 								botoes[(ind/5)+1][ind%5] = new Marechal(1);
 								if (auxiliar.debugador == 1) {
-									botoes[ind/5][(ind%5)+1].setText("Marechal");
+									botoes[(ind/5)+1][ind%5].setText("Marechal");
 								}
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
@@ -680,11 +687,20 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.remove(botoes[(ind/5)+1][ind%5]);
 								botoes[(ind/5)+1][ind%5] = new Marechal(1);
 								if (auxiliar.debugador == 1) {
-									botoes[ind/5][(ind%5)+1].setText("Marechal");
+									botoes[(ind/5)+1][ind%5].setText("Marechal");
 								}
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
 								auxiliar.turno = 0;
+							}
+							else {
+								moveType = random.nextInt(3);
+							}
+							try {
+								Thread.sleep(10L);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
 							this.revalidate();
 							control = true;
@@ -700,7 +716,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.remove(botoes[(ind/5)+1][ind%5]);
 								botoes[(ind/5)+1][ind%5] = new CaboArmeiro(1);
 								if (auxiliar.debugador == 1) {
-									botoes[ind/5][(ind%5)+1].setText("Cabo Armeiro");
+									botoes[(ind/5)+1][ind%5].setText("Cabo Armeiro");
 								}
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
@@ -723,14 +739,17 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.remove(botoes[(ind/5)+1][ind%5]);
 								botoes[(ind/5)+1][ind%5] = new CaboArmeiro(1);
 								if (auxiliar.debugador == 1) {
-									botoes[ind/5][(ind%5)+1].setText("Cabo Armeiro");
+									botoes[(ind/5)+1][ind%5].setText("Cabo Armeiro");
 								}
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
 								auxiliar.turno = 0;
 							}
 							else if (botoes[(ind/5)+1][ind%5] instanceof Bandeira && botoes[(ind/5)+1][ind%5].getTime() == 0) {
-								
+								if (JOptionPane.showConfirmDialog(this, "Você perdeu o jogo!", "Perdeu!",
+										JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0) {
+									this.dispose();
+								}
 							}
 							else if (botoes[(ind/5)+1][ind%5] instanceof Bomba && botoes[(ind/5)+1][ind%5].getTime() == 0) {
 								System.out.println("Achei B");
@@ -741,7 +760,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.remove(botoes[(ind/5)+1][ind%5]);
 								botoes[(ind/5)+1][ind%5] = new CaboArmeiro(1);
 								if (auxiliar.debugador == 1) {
-									botoes[ind/5][(ind%5)+1].setText("Cabo Armeiro");
+									botoes[(ind/5)+1][ind%5].setText("Cabo Armeiro");
 								}
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
@@ -756,7 +775,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.remove(botoes[(ind/5)+1][ind%5]);
 								botoes[(ind/5)+1][ind%5] = new CaboArmeiro(1);
 								if (auxiliar.debugador == 1) {
-									botoes[ind/5][(ind%5)+1].setText("Cabo Armeiro");
+									botoes[(ind/5)+1][ind%5].setText("Cabo Armeiro");
 								}
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
@@ -773,6 +792,15 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
 								auxiliar.turno = 0;
+							}
+							else {
+								moveType = random.nextInt(3);
+							}
+							try {
+								Thread.sleep(10L);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
 							this.revalidate();
 							control = true;
@@ -788,7 +816,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.remove(botoes[(ind/5)+1][ind%5]);
 								botoes[(ind/5)+1][ind%5] = new Soldado(1);
 								if (auxiliar.debugador == 1) {
-									botoes[ind/5][(ind%5)+1].setText("Soldado");
+									botoes[(ind/5)+1][ind%5].setText("Soldado");
 								}
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
@@ -811,14 +839,17 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.remove(botoes[(ind/5)+1][ind%5]);
 								botoes[(ind/5)+1][ind%5] = new Soldado(1);
 								if (auxiliar.debugador == 1) {
-									botoes[ind/5][(ind%5)+1].setText("Soldado");
+									botoes[(ind/5)+1][ind%5].setText("Soldado");
 								}
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
 								auxiliar.turno = 0;
 							}
 							else if (botoes[(ind/5)+1][ind%5] instanceof Bandeira && botoes[(ind/5)+1][ind%5].getTime() == 0) {
-
+								if (JOptionPane.showConfirmDialog(this, "Você perdeu o jogo!", "Perdeu!",
+										JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0) {
+									this.dispose();
+								}
 							}
 							else if (botoes[(ind/5)+1][ind%5] instanceof Bomba && botoes[(ind/5)+1][ind%5].getTime() == 0) {
 								System.out.println("Achei B");
@@ -852,6 +883,15 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.add(botoes[ind/5][ind%5], ind);
 								auxiliar.turno = 0;
 							}
+							else {
+								moveType = random.nextInt(3);
+							}
+							try {
+								Thread.sleep(10L);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							this.revalidate();
 							control = true;
 						}
@@ -866,7 +906,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.remove(botoes[(ind/5)+1][ind%5]);
 								botoes[(ind/5)+1][ind%5] = new Espiao(1);
 								if (auxiliar.debugador == 1) {
-									botoes[ind/5][(ind%5)+1].setText("Espiao");
+									botoes[(ind/5)+1][ind%5].setText("Espiao");
 								}
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
@@ -881,7 +921,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.remove(botoes[(ind/5)+1][ind%5]);
 								botoes[(ind/5)+1][ind%5] = new Espiao(1);
 								if (auxiliar.debugador == 1) {
-									botoes[ind/5][(ind%5)+1].setText("Espiao");
+									botoes[(ind/5)+1][ind%5].setText("Espiao");
 								}
 								botoes[(ind/5)+1][ind%5].addActionListener(this);
 								tabuleiro.add(botoes[(ind/5)+1][ind%5], ind+5);
@@ -900,7 +940,10 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								auxiliar.turno = 0;
 							}
 							else if (botoes[(ind/5)+1][ind%5] instanceof Bandeira && botoes[(ind/5)+1][ind%5].getTime() == 0) {
-								
+								if (JOptionPane.showConfirmDialog(this, "Você perdeu o jogo!", "Perdeu!",
+										JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0) {
+									this.dispose();
+								}
 							}
 							else if (botoes[(ind/5)+1][ind%5] instanceof Bomba && botoes[(ind/5)+1][ind%5].getTime() == 0) {
 								System.out.println("Achei B");
@@ -930,12 +973,20 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								tabuleiro.add(botoes[ind/5][ind%5], ind);
 								auxiliar.turno = 0;
 							}
+							else {
+								moveType = random.nextInt(3);
+							}
+							try {
+								Thread.sleep(10L);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							this.revalidate();
 							control = true;
 						}
 					}
 					ind = random.nextInt(25);
-					moveType = 1;
 				}
 				
 				// PRA DIREITA
@@ -1022,7 +1073,19 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)+1] instanceof Bandeira && botoes[ind/5][(ind%5)+1].getTime() == 0) {
-								
+								if (JOptionPane.showConfirmDialog(this, "Você perdeu o jogo!", "Perdeu!",
+										JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0) {
+									this.dispose();
+								}
+							}
+							else {
+								moveType = random.nextInt(3);
+							}
+							try {
+								Thread.sleep(10L);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
 							this.revalidate();
 							control = true;
@@ -1104,7 +1167,19 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)+1] instanceof Bandeira && botoes[ind/5][(ind%5)+1].getTime() == 0) {
-								
+								if (JOptionPane.showConfirmDialog(this, "Você perdeu o jogo!", "Perdeu!",
+										JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0) {
+									this.dispose();
+								}
+							}
+							else {
+								moveType = random.nextInt(3);
+							}
+							try {
+								Thread.sleep(10L);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
 							this.revalidate();
 							control = true;
@@ -1176,7 +1251,19 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)+1] instanceof Bandeira && botoes[ind/5][(ind%5)+1].getTime() == 0) {
-								
+								if (JOptionPane.showConfirmDialog(this, "Você perdeu o jogo!", "Perdeu!",
+										JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0) {
+									this.dispose();
+								}
+							}
+							else {
+								moveType = random.nextInt(3);
+							}
+							try {
+								Thread.sleep(10L);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
 							this.revalidate();
 							control = true;
@@ -1241,7 +1328,19 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)+1] instanceof Bandeira && botoes[ind/5][(ind%5)+1].getTime() == 0) {
-								
+								if (JOptionPane.showConfirmDialog(this, "Você perdeu o jogo!", "Perdeu!",
+										JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0) {
+									this.dispose();
+								}
+							}
+							else {
+								moveType = random.nextInt(3);
+							}
+							try {
+								Thread.sleep(10L);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
 							this.revalidate();
 							control = true;
@@ -1256,98 +1355,355 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 						if (botoes[ind/5][ind%5] instanceof Marechal) {
 							
 							if (botoes[ind/5][(ind%5)-1] instanceof Vazio) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Marechal(1);
+								if (auxiliar.debugador == 1) {
+									botoes[ind/5][(ind%5)-1].setText("Marechal");
+								}
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Marechal && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Vazio();
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof CaboArmeiro && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Marechal(1);
+								if (auxiliar.debugador == 1) {
+									botoes[ind/5][(ind%5)-1].setText("Marechal");
+								}
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Soldado && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Marechal(1);
+								if (auxiliar.debugador == 1) {
+									botoes[ind/5][(ind%5)-1].setText("Marechal");
+								}
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Espiao && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Marechal(1);
+								if (auxiliar.debugador == 1) {
+									botoes[ind/5][(ind%5)-1].setText("Marechal");
+								}
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Bomba && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Vazio();
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Bandeira && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								if (JOptionPane.showConfirmDialog(this, "Você perdeu o jogo!", "Perdeu!",
+										JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0) {
+									this.dispose();
+								}
 							}
+							else {
+								moveType = random.nextInt(3);
+							}
+							try {
+								Thread.sleep(10L);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							this.revalidate();
+							control = true;
 						}
 						else if (botoes[ind/5][ind%5] instanceof CaboArmeiro) {
 							
 							if (botoes[ind/5][(ind%5)-1] instanceof Vazio) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new CaboArmeiro(1);
+								if (auxiliar.debugador == 1) {
+									botoes[ind/5][(ind%5)-1].setText("Cabo Armeiro");
+								}
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Marechal && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof CaboArmeiro && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Vazio();
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Soldado && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new CaboArmeiro(1);
+								if (auxiliar.debugador == 1) {
+									botoes[ind/5][(ind%5)-1].setText("Cabo Armeiro");
+								}
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Espiao && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new CaboArmeiro(1);
+								if (auxiliar.debugador == 1) {
+									botoes[ind/5][(ind%5)-1].setText("Cabo Armeiro");
+								}
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Bomba && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new CaboArmeiro(1);
+								if (auxiliar.debugador == 1) {
+									botoes[ind/5][(ind%5)-1].setText("Cabo Armeiro");
+								}
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Bandeira && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								if (JOptionPane.showConfirmDialog(this, "Você perdeu o jogo!", "Perdeu!",
+										JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0) {
+									this.dispose();
+								}
 							}
+							else {
+								moveType = random.nextInt(3);
+							}
+							try {
+								Thread.sleep(10L);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							this.revalidate();
+							control = true;
 						}
 						else if (botoes[ind/5][ind%5] instanceof Soldado) {
 							
-						}							
-						if (botoes[ind/5][(ind%5)-1] instanceof Vazio) {
-							
-						}
-						else if (botoes[ind/5][(ind%5)-1] instanceof Marechal && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-							
-						}
-						else if (botoes[ind/5][(ind%5)-1] instanceof CaboArmeiro && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-							
-						}
-						else if (botoes[ind/5][(ind%5)-1] instanceof Soldado && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-							
-						}
-						else if (botoes[ind/5][(ind%5)-1] instanceof Espiao && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-							
-						}
-						else if (botoes[ind/5][(ind%5)-1] instanceof Bomba && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-							
-						}
-						else if (botoes[ind/5][(ind%5)-1] instanceof Bandeira && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-							
+							if (botoes[ind/5][(ind%5)-1] instanceof Vazio) {
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Soldado(1);
+								if (auxiliar.debugador == 1) {
+									botoes[ind/5][(ind%5)-1].setText("Soldado");
+								}
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
+							}
+							else if (botoes[ind/5][(ind%5)-1] instanceof Marechal && botoes[ind/5][(ind%5)-1].getTime() == 0) {
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								auxiliar.turno = 0;
+							}
+							else if (botoes[ind/5][(ind%5)-1] instanceof CaboArmeiro && botoes[ind/5][(ind%5)-1].getTime() == 0) {
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								auxiliar.turno = 0;
+							}
+							else if (botoes[ind/5][(ind%5)-1] instanceof Soldado && botoes[ind/5][(ind%5)-1].getTime() == 0) {
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Vazio();
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
+							}
+							else if (botoes[ind/5][(ind%5)-1] instanceof Espiao && botoes[ind/5][(ind%5)-1].getTime() == 0) {
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Soldado(1);
+								if (auxiliar.debugador == 1) {
+									botoes[ind/5][(ind%5)-1].setText("Soldado");
+								}
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
+							}
+							else if (botoes[ind/5][(ind%5)-1] instanceof Bomba && botoes[ind/5][(ind%5)-1].getTime() == 0) {
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Vazio();
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
+							}
+							else if (botoes[ind/5][(ind%5)-1] instanceof Bandeira && botoes[ind/5][(ind%5)-1].getTime() == 0) {
+								if (JOptionPane.showConfirmDialog(this, "Você perdeu o jogo!", "Perdeu!",
+										JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0) {
+									this.dispose();
+								}
+							}
+							else {
+								moveType = random.nextInt(3);
+							}
+							try {
+								Thread.sleep(10L);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							this.revalidate();
+							control = true;
 						}
 						else if (botoes[ind/5][ind%5] instanceof Espiao) {
 							
 							if (botoes[ind/5][(ind%5)-1] instanceof Vazio) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Espiao(1);
+								if (auxiliar.debugador == 1) {
+									botoes[ind/5][(ind%5)-1].setText("Espiao");
+								}
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Marechal && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof CaboArmeiro && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Soldado && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Espiao && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Vazio();
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Bomba && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								tabuleiro.remove(botoes[ind/5][ind%5]);
+								botoes[ind/5][ind%5] = new Vazio();
+								botoes[ind/5][ind%5].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][ind%5], ind);
+								tabuleiro.remove(botoes[ind/5][(ind%5)-1]);
+								botoes[ind/5][(ind%5)-1] = new Vazio();
+								botoes[ind/5][(ind%5)-1].addActionListener(this);
+								tabuleiro.add(botoes[ind/5][(ind%5)-1], ind+5);
+								auxiliar.turno = 0;
 							}
 							else if (botoes[ind/5][(ind%5)-1] instanceof Bandeira && botoes[ind/5][(ind%5)-1].getTime() == 0) {
-								
+								if (JOptionPane.showConfirmDialog(this, "Você perdeu o jogo!", "Perdeu!",
+										JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE) == 0) {
+									this.dispose();
+								}
 							}
+							else {
+								moveType = random.nextInt(3);
+							}
+							try {
+								Thread.sleep(10L);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							this.revalidate();
+							control = true;
 						}
 					}
 				}
@@ -1454,7 +1810,7 @@ public class JanelaJogo extends JFrame implements ComponentListener, ActionListe
 						}
 					}
 				}
-				moveType = random.nextInt(2);
+				moveType = random.nextInt(3);
 			}
 			else {
 				ind = random.nextInt(25);
