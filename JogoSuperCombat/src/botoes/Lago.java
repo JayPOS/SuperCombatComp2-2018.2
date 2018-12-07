@@ -6,31 +6,9 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
-public class Lago extends JButton {
+public class Lago extends Peça {
 
 	public Lago() {
-		super("Lago");
-		this.setBackground(Color.CYAN);
+		super("Lago", 3, 0);
 	}
-
-	public Lago(Icon icon) {
-		super(icon);
-		// TODO Auto-generated constructor stub
-	}
-
-	public Lago(String text) {
-		super(text);
-		// TODO Auto-generated constructor stub
-	}
-
-	public Lago(Action a) {
-		super(a);
-		// TODO Auto-generated constructor stub
-	}
-
-	public Lago(String text, Icon icon) {
-		super(text, icon);
-		// TODO Auto-generated constructor stub
-	}
-
 }

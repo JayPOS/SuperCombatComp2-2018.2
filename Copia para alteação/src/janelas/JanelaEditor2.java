@@ -31,12 +31,12 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	
 	private JanelaJogo jogao;
 	
-	private Bandeira bandeira = new Bandeira(4);
-	private Soldado soldado = new Soldado(4);
-	private Bomba bomba = new Bomba(4);
-	private Espiao espiao = new Espiao(4);
-	private CaboArmeiro cabo = new CaboArmeiro(4);
-	private Marechal marechal = new Marechal(4);
+	private Bandeira bandeira = new Bandeira(2);
+	private Soldado soldado = new Soldado(2);
+	private Bomba bomba = new Bomba(2);
+	private Espiao espiao = new Espiao(2);
+	private CaboArmeiro cabo = new CaboArmeiro(2);
+	private Marechal marechal = new Marechal(2);
 	private Vazio vazio = new Vazio();
 	private Desfazer desfazer = new Desfazer();
 	private Debug debug = new Debug();
@@ -64,7 +64,7 @@ public class JanelaEditor2 extends JFrame implements ComponentListener, ActionLi
 	private int controleBotao; 
 	
 	private JPanel[][] panels = new JPanel[QTD_BOTAO][QTD_BOTAO];
-	private Peça[][] botoes = new Peça[QTD_BOTAO][QTD_BOTAO];
+	private JButton[][] botoes = new JButton[QTD_BOTAO][QTD_BOTAO];
 	
 	public JanelaEditor2(int tipo) {
 		super("Super Combat");

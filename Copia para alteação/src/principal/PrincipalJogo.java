@@ -5,7 +5,7 @@ import janelas.*;
 import java.awt.event.*;
 import java.awt.EventQueue;
 import botoes.*;
-import javax.swing.*;
+
 
 public class PrincipalJogo implements ActionListener {
 	
@@ -35,14 +35,19 @@ public class PrincipalJogo implements ActionListener {
 	public static void main(String[] args) {
 		try {
 			PrincipalJogo jogo = new PrincipalJogo();
-			Object[] opcoes = {"Editor", "Aleatório"};
-			jogo.controladorJanela = new JanelaEditor2(JOptionPane.showOptionDialog(null, 
-					"Selecione o modo de jogo!", 
-					"Super Combat", 
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opcoes, 0));
-			jogo.controladorJanela.setVisible(true);
-			
-			
+			if (jogo.getModoJanela() == jogo.getMENU()) {
+				
+			}
+			else if (jogo.modoJanela == jogo.getEDITOR()) {
+				jogo.inicializaEditor(1);
+			}
+			else if(jogo.getModoJanela() == jogo.getALEATORIO()) {
+				
+			}
+			else if (jogo.modoJanela == jogo.getJOGAR()) {
+				jogo.inicializaJogao();
+				
+			}
 			while (jogo.controladorJanela.isVisible()) {
 				jogo.controladorJanela.repaint();
 			}

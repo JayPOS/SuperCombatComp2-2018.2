@@ -5,22 +5,9 @@ import javax.swing.*;
 
 import janelas.JanelaJogo;
 
-public class Vazio extends JButton {
-
-    private static int TAM = JanelaJogo.getTAM_BOTAO();
+public class Vazio extends Peça {
 
     public Vazio() {
-    	super("Vazio");
-    	this.setBackground(new Color(29, 252, 66));
-    	this.setPreferredSize(new Dimension(TAM, TAM));
-    	
-    }
-
-    public Vazio(String text) {
-        super(text);
-    }
-
-    public Vazio(String text, Icon icon) {
-        super(text, icon);
+    	super("Vazio", 2, 0);
     }
 }
